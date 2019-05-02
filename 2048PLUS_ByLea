@@ -5,7 +5,7 @@ def matrix(b,a):
     if(a==len(matriz)-1):
         return print(b[a])
     else:
-        return print(b[a]) + "/t" + matrix(b,a+1)
+        return print(b[a]) + matrix(b,a+1)
 
 from tkinter import *
 from tkinter import messagebox
@@ -48,14 +48,45 @@ user_widget= Entry(zero)
 user_widget.place(x=430,y=307)   #El widget del entry
 user_widget.config(justify="center", font=("Unifont", 15), textvariable = user_text)
 
+def fun2():
+    putIN()
+    openW2()
 def putIN():
     name2 = user_text.get()
     if(len(name2)==0):
         return messagebox.showwarning("Cuidado", "No has puesto un nombre de usuario válido")  #No permite que pongan nombres sin caracteres
     else:
         return leaderB.insert(END, user_text.get())      #Pone el nombre en la leaderboard
+#Al logear que pida las bases
+def openW():
+    root.deiconify()
+    win=Tk()
+    win.resizable(False,False)
+    win.title("Escoja antes de empezar")
+    win.geometry("600x100")
+    win.config(bg="#09345F")
     
-btnLogin= Button(zero, text="Login", font=("Unifont", 12), command=putIN, width="20", height="5", cursor="hand2")
+    labelW= Label(win,text="Elija entre las distintas bases númericas disponibles para jugar",bg="#09345F",font=("Unifont", 13),fg="#6FD1FE")
+    labelW.grid(row=0, column=0, padx=5, pady=5, columnspan=4)
+    
+    btnBin= Button(win, text="Binario", font=("Unifont", 15), width="5", height="1", cursor="hand2")
+    btnBin.place(x=50,y=47)
+    
+    btnOct= Button(win, text="Octal", font=("Unifont",15), width="5", height="1", cursor="hand2")
+    btnOct.place(x=170,y=47)
+    
+    btnDec= Button(win, text="Decimal", font=("Unifont",15), width="5", height="1", cursor="hand2")
+    btnDec.place(x=290,y=47)
+    
+    btnHex= Button(win, text="Hexadecimal", font=("Unifont",15), width="10", height="1", cursor="hand2")
+    btnHex.place(x=410,y=47)
+def openW2():
+    name = user_text.get()
+    if(len(name)>0):
+        return openW()
+        
+    
+btnLogin= Button(zero, text="Login", font=("Unifont", 12), command=fun2, width="20", height="5", cursor="hand2")
 btnLogin.place(x=430,y=350)
 
 
