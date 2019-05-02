@@ -1,0 +1,62 @@
+matriz=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+def showM():
+    return matrix(matriz,0)
+def matrix(b,a):
+    if(a==len(matriz)-1):
+        return print(b[a])
+    else:
+        return print(b[a]) + "/t" + matrix(b,a+1)
+
+from tkinter import *
+from tkinter import messagebox
+root= Tk()
+
+root.title("Project 2048 PLUS") #Título de la interfaz en sí
+
+root.resizable(False,False) #No permitir el redimensionar
+
+zero=Frame()  #Definir un primer Frame
+zero.pack()
+
+zero.config(bg="#09345F")#Color del frame
+
+zero.config(width="670", height="670") #Ancho y alto del frame
+
+labelT= Label(zero, text="2048 PLUS", fg="#6FD1FE", font=("Triforce", 37), bg="#09345F") #Nombre título
+labelT.place(x=200, y=10) #Posición del título
+
+#Crear el Leaderboard
+labelB= Label(zero, text="Leaderboard", font=("Unifont", 20), bg="#09345F", fg="#6FD1FE")
+labelB.place(x=20,y=77)
+leaderB= Listbox(zero, width="30", height="35")
+leaderB.place(x=20,y=120)
+
+#Crear el entry de texto y su respectivo boton
+def limitEntry(*args):                              #Toma una cantidad indefinida de argumentos con *args
+    name = user_text.get()
+    if(len(name)<10):
+        return user_text.set(name)                  #Limitador de caracteres del Entry
+    else:
+        return user_text.set(name[:10])
+    
+user_text = StringVar()                             #Declara variable de tipo cadena/str
+user_text.trace("w", limitEntry)                    #Escribe y ejerce la funcion limitador
+txtUsr= Label(zero, text="Username: ", font=("Unifont", 20), bg="#09345F", fg="#6FD1FE")
+txtUsr.place(x=300,y=300)
+
+user_widget= Entry(zero)  
+user_widget.place(x=430,y=307)   #El widget del entry
+user_widget.config(justify="center", font=("Unifont", 15), textvariable = user_text)
+
+def putIN():
+    name2 = user_text.get()
+    if(len(name2)==0):
+        return messagebox.showwarning("Cuidado", "No has puesto un nombre de usuario válido")  #No permite que pongan nombres sin caracteres
+    else:
+        return leaderB.insert(END, user_text.get())      #Pone el nombre en la leaderboard
+    
+btnLogin= Button(zero, text="Login", font=("Unifont", 12), command=putIN, width="20", height="5", cursor="hand2")
+btnLogin.place(x=430,y=350)
+
+
+root.mainloop()
