@@ -9,6 +9,28 @@ matriz=[[0,0,0,0],
         [0,0,0,0],
         [0,0,0,0],
         [0,0,0,0]]
+def p2048():
+    first_matriz()
+    runM()
+    print("Digite la dirección donde quiere mover los números(solo puede digitar: arriba, abajo, derecha o izquierda)")
+    dir1 = input()
+    if(dir1=="arriba" or dir1=="abajo" or dir1=="derecha" or dir1=="izquierda"):
+        if(dir1=="arriba"):
+            plusnum(3,0,"u")
+            return mover(0,0,"u")
+        elif(dir1=="abajo"):
+            plusnum(0,0,"d")
+            return mover(3,0,"d")
+        elif(dir1=="derecha"):
+            plusnum(0,0,"r")
+            return mover(0,3,"r")
+        else:
+            plusnum(0,3,"l")
+            return mover(0,0,"l")
+    else:
+        return print("No puso la dirección correctamente")
+    
+    
 #======================Contador de tiempo=====================================
 def countime1():
     starting_time = int(time.time())
@@ -195,7 +217,7 @@ def plusnum(y,z,mov):
                 return runM()
             else:
                 return plusnum(y,z-1,mov)
-
+#========================================================================================================================================
 def mover(y,z,mov):
     global matriz
     if(mov == "u"):
@@ -207,6 +229,7 @@ def mover(y,z,mov):
             elif(y>=3 and z==2):
                 return mover(0,3,mov)
             elif(y>=3 and z==3):
+                first_matriz()
                 return runM()
             elif(y==0):
                 if(matriz[y+1][z]!=0):
@@ -288,6 +311,7 @@ def mover(y,z,mov):
             elif(y<0 and z==2):
                 return mover(3,3,mov)
             elif(y<0 and z==3):
+                first_matriz()
                 return runM()
             elif(y==3):
                 if(matriz[y-1][z]!=0):
@@ -370,6 +394,7 @@ def mover(y,z,mov):
             elif(y==2 and z<0):
                 return mover(3,0,mov)
             elif(y==3 and z<0):
+                first_matriz()
                 return runM()
             elif(z==3):
                 if(matriz[y][z-1]!=0):
@@ -452,6 +477,7 @@ def mover(y,z,mov):
             elif(y==2 and z>=3):
                 return mover(3,0,mov)
             elif(y==3 and z>=3):
+                first_matriz()
                 return runM()
             elif(z==0):
                 if(matriz[y][z+1]!=0):
@@ -525,123 +551,3 @@ def mover(y,z,mov):
                 return runM()
             else:
                 return mover(y,z+1,mov)
-        
-            
-                        
-           
-
-def movements(press):
-    if(press.keysym == 'Up'):
-        plusnum(3,0,"u")
-        #Función suma arriba y subir la matriz
-    #elif(press.keysym == 'Down'):
-
-    #elif(press.keysym == 'Right'):
-    
-
-
-#   ***========================Interfaz==============================***
-from tkinter import *
-from tkinter import messagebox
-root= Tk()
-
-root.title("Project 2048 PLUS") #Título de la interfaz en sí
-
-root.resizable(False,False) #No permitir el redimensionar
-
-zero=Frame()  #Definir un primer Frame
-zero.pack()
-
-zero.config(bg="#09345F")#Color del frame
-
-zero.config(width="670", height="670") #Ancho y alto del frame
-
-labelT= Label(zero, text="2048 PLUS", fg="#6FD1FE", font=("Triforce", 37), bg="#09345F") #Nombre título
-labelT.place(x=200, y=10) #Posición del título
-
-#Crear el Leaderboard
-labelB= Label(zero, text="Leaderboard", font=("Unifont", 20), bg="#09345F", fg="#6FD1FE")
-labelB.place(x=20,y=77)
-leaderB= Listbox(zero, width="30", height="35")
-leaderB.place(x=20,y=120)
-
-file = open("Usuarios.txt","r+")
-leaderB.insert(0, file.read())#Pone el nombre en la leaderboard
-file.close()
-
-#Crear el entry de texto y su respectivo boton
-def limitEntry(*args):                              #Toma una cantidad indefinida de argumentos con *args
-    name = user_text.get()
-    if(len(name)<10):
-        return user_text.set(name)                  #Limitador de caracteres del Entry
-    else:
-        return user_text.set(name[:10])
-    
-user_text = StringVar()                             #Declara variable de tipo cadena/str
-user_text.trace("w", limitEntry)                    #Escribe y ejerce la funcion limitador
-txtUsr= Label(zero, text="Username: ", font=("Unifont", 20), bg="#09345F", fg="#6FD1FE")
-txtUsr.place(x=300,y=300)
-
-user_widget= Entry(zero)  
-user_widget.place(x=430,y=307)   #El widget del entry
-user_widget.config(justify="center", font=("Unifont", 15), textvariable = user_text)
-
-def fun2():
-    putIN()
-    openW2()
-def putIN():
-    name2 = user_text.get()
-    if(len(name2)==0):
-        return messagebox.showwarning("Cuidado", "No has puesto un nombre de usuario válido")  #No permite que pongan nombres sin caracteres
-    else:
-        file2=open("Usuarios.txt","r+")#r+ especifica lectura y escritura
-        file2.seek(len(file2.read()))                                
-        file2.write(name2+"\n")
-        file2.seek(0)
-        leaderB.insert(END,file2.read())
-        file2.close()
-        
-
-#Al logear que pida las bases
-def openW():
-    root.deiconify()
-    win=Tk()
-    win.resizable(False,False)
-    win.title("Escoja antes de empezar")
-    win.geometry("600x100")
-    win.config(bg="#09345F")
-    
-    labelW= Label(win,text="Elija entre las distintas bases númericas disponibles para jugar",bg="#09345F",font=("Unifont", 13),fg="#6FD1FE")
-    labelW.grid(row=0, column=0, padx=5, pady=5, columnspan=4)
-    
-    btnBin= Button(win, text="Binario", font=("Unifont", 15), width="5", height="1", cursor="hand2")
-    btnBin.place(x=50,y=47)
-    
-    btnOct= Button(win, text="Octal", font=("Unifont",15), width="5", height="1", cursor="hand2")
-    btnOct.place(x=170,y=47)
-    
-    btnDec= Button(win, text="Decimal", font=("Unifont",15), command=openG, width="5", height="1", cursor="hand2")
-    btnDec.place(x=290,y=47)
-    
-    btnHex= Button(win, text="Hexadecimal", font=("Unifont",15), width="10", height="1", cursor="hand2")
-    btnHex.place(x=410,y=47)
-def openW2():
-    name = user_text.get()
-    if(len(name)>0):
-        return openW()
-##63C4E9
-def openG():
-    win2=Tk()
-    win2.resizable(False,False)
-    win2.title("2048 PLUS")
-    win2.geometry("670x670")
-    win2.config(bg="#09345F")
-
-    label0= Label(win2, text="",bg="#09345F",font=("Unifont",12),fg="#050028")
-        
-    
-btnLogin= Button(zero, text="Login", font=("Unifont", 12), command = fun2, width="20", height="5", cursor="hand2")
-btnLogin.place(x=430,y=350)
-
-
-root.mainloop()
